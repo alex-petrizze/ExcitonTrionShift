@@ -4,6 +4,10 @@ from scipy.special import voigt_profile
 
 from .Equations import eta_linewidth, linewidth_g_l
 
+eta_0 = 0.5
+linewidth_0 = 0.3
+linewidth_g_0, linewidth_l_0  = linewidth_g_l(eta_0, linewidth_0)
+
 class Lineshape:
     n_params = 0
     def profile(self, x):
@@ -18,7 +22,7 @@ class Lineshape:
     
 class GaussianLineshape(Lineshape):
     n_params = 1
-    p0 = [0.1]
+    p0 = [linewidth_0]
     bounds_min = [0]
     bounds_max = [np.inf]
     label = 'Gaussian'
@@ -47,7 +51,7 @@ class GaussianLineshape(Lineshape):
     
 class LorentzianLineshape(Lineshape):
     n_params = 1
-    p0 = [0.1]
+    p0 = [linewidth_0]
     bounds_min = [0]
     bounds_max = [np.inf]
     label = 'Lorentzian'
@@ -76,8 +80,8 @@ class LorentzianLineshape(Lineshape):
     
 class VoigtLineshape(Lineshape):
     n_params = 2
-    p0 = [0.1,
-          0.1]
+    p0 = [linewidth_g_0,
+          linewidth_l_0]
     bounds_min = [0,
                   0]
     bounds_max = [np.inf,
@@ -112,8 +116,8 @@ class VoigtLineshape(Lineshape):
     
 class PseudoVoigtLineshapePhysical(Lineshape):
     n_params = 2
-    p0 = [0.1,
-          0.1]
+    p0 = [linewidth_g_0,
+          linewidth_l_0]
     bounds_min = [0,
                   0]
     bounds_max = [np.inf,
@@ -149,8 +153,8 @@ class PseudoVoigtLineshapePhysical(Lineshape):
     
 class PseudoVoigtLineshapeWeight(Lineshape):
     n_params = 2
-    p0 = [0.5,
-          0.1]
+    p0 = [eta_0,
+          linewidth_0]
     bounds_min = [0,
                   0]
     bounds_max = [1,

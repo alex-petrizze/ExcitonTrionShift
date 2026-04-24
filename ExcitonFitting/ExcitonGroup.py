@@ -47,7 +47,7 @@ class ExcitonGroup:
 
             lineshape_params = popt[idx : idx + lineshape.n_params]
             idx += lineshape.n_params
-            new_lineshape = type(lineshape)(*lineshape_params)  
+            new_lineshape = lineshape(*lineshape_params)
 
             new_exciton.lineshape = new_lineshape
 
@@ -91,7 +91,6 @@ class ExcitonGroup:
             new_exciton_dict[exciton.label] = exciton.copy()
         return ExcitonGroup(new_exciton_dict)
     
-
     def to_row(self, row):
         for exciton in self.exciton_list:
             base = f'{self.label}_exciton_{exciton.label}'

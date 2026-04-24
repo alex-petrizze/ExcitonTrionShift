@@ -1,7 +1,6 @@
 from scipy.optimize import fsolve
 import numpy as np
 
-sigma = 0
 call_count = 0
 
 def thompson_fwhm(fwhm_g, fwhm_l):
@@ -52,7 +51,7 @@ def RMSE_percentage(y_a, y_b):
     rmse_normalized = RMSE_normalized(y_a, y_b)
     return rmse_normalized * 100
 
-def Chi2(y_data, y_fit):
+def Chi2_gaussian(y_data, y_fit, sigma):
     delta = y_data - y_fit
     return np.sum((delta / sigma)**2)
 
