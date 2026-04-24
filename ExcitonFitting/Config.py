@@ -32,7 +32,7 @@ true_excitons = {"X": true_exciton_a,
 TRUE_EXCITON_GROUP = ExcitonGroup(true_excitons, label='True')
 
 # Variable Ranges
-ENERGY_RANGE_B = np.arange(1.7, 1.9, 0.01)
+ENERGY_RANGE_B = np.arange(1.7, 1.9, 0.001)
 
 # Bounds
 bounds_min_energy = 0

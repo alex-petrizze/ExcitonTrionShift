@@ -4,18 +4,35 @@ from cycler import cycler
 background_color = '#101316'
 color_grey = '#F2F5FA'
 
+# colors = [
+#     '#636EFA', # Blue
+#     '#EF553B', # Red
+#     '#00CC96', # Green
+#     '#FF820E', # Orange
+#     '#980FFE', # Violet
+#     '#19D3F3', # Cyan
+#     '#FF6692', # Peach
+#     '#B6E880', # Other Green
+#     '#FF97FF', # Pink
+#     '#FECB52'  # Yellow
+# ]
+
 colors = [
-    '#636EFA', # Blue
-    '#EF553B', # Red
-    '#00CC96', # Green
-    '#FF820E', # Orange
-    '#980FFE', # Violet
-    '#19D3F3', # Cyan
-    '#FF6692', # Peach
-    '#B6E880', # Other Green
-    '#FF97FF', # Pink
-    '#FECB52'  # Yellow
+    '#ff595e', # Red
+    '#ffca3a', # Yellow
+    '#8ac926', # Green
+    '#1982c4', # Blue
+    '#6a4c93', # Purple,
+    '#59FFFA', # Cyan
 ]
+
+# colors = [
+#     '#C72138', # Red
+#     '#E06236', # Yellow
+#     '#D7A64B', # Green
+#     '#304C7A', # Purple,
+#     '#7547B2', # Cyan
+# ]
 
 def petrizze_template():
     plt.style.use('dark_background')
