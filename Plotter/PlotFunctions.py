@@ -1,7 +1,10 @@
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+from ExcitonFitting import Exciton, ExcitonGroup
+from ExcitonFitting.Config import X_RANGE
+import numpy as np
 
-row_col = [[1, 1], [2, 1], [1, 2], [2, 2]]
+row_col = [[1, 1], [1, 2], [2, 1], [2, 2]]
 
 lineshape_colors = {
     'GAUSSIAN': '#ff595e',
@@ -80,32 +83,101 @@ def quad_plot(df, parameter_x, parameter_y, xlabel=None, ylabel=None, x_range=No
 
     return fig
         
-    #     if showexpected:
-    #         ax[j].plot(x, x, '--', label='True', color='#F4F5F7')
 
-    #     ax[j].annotate(f'{noise_key} noise std', xy=(0.8, 0.95), xycoords='axes fraction')
+def fit_plot(df, lineshape_key, true_exciton_T_energy):
 
-    #     if x_range:
-    #         ax[j].set_xlim(x_range[0], x_range[1])
-    #     if y_range:
-    #         ax[j].set_ylim(y_range[0], y_range[1])
-    #     # ax[j].set_title(f'{noise_key} noise std')
-        
-    # ax[0].set_ylabel(f'{ylabel}')
-    # ax[2].set_ylabel(f'{ylabel}')
-    # ax[2].set_xlabel(f'{xlabel}')
-    # ax[3].set_xlabel(f'{xlabel}')
+    fig = make_subplots(rows=2, cols=2, horizontal_spacing=0, vertical_spacing=0)
+    for j, (noise_key, noise_data) in enumerate(df.groupby("NOISE_STD_VALUE")):
+        row = row_col[j][0]
+        col = row_col[j][1]
 
-    
-    # handles, labels = ax[0].get_legend_handles_labels()
-    # fig.legend(
-    #     handles,
-    #     labels,
-    #     loc='center left',
-    #     bbox_to_anchor=(0.00, 0.5)
-    # )
-    # fig.subplots_adjust(right=0.8)
+        intermediate_data = noise_data[
+            noise_data['LINESHAPE_KEY'] == lineshape_key
+        ]
+        intermediate_intermediate_data = intermediate_data[
+            np.isclose(intermediate_data['True_exciton_T_energy'], true_exciton_T_energy)
+        ]
+
+        data = intermediate_intermediate_data.iloc[0]
+
+        true_exciton_X_dict = {'energy': data['True_exciton_X_energy'],
+                               'amplitude': data['True_exciton_X_amplitude'],
+                               'label': 'True X',
+                               'lineshape': {'label': data['True_exciton_X_lineshape'],
+                                             'linewidth': data['True_exciton_X_linewidth'],
+                                             'linewidth_g': data['True_exciton_X_linewidth_g'],
+                                             'linewidth_l': data['True_exciton_X_linewidth_l'],
+                                             'weight': data['True_exciton_X_weight']}}
+        true_exciton_X = Exciton()
+        true_exciton_X.from_dict(true_exciton_X_dict)
+
+        true_exciton_T_dict = {'energy': data['True_exciton_T_energy'],
+                                'amplitude': data['True_exciton_T_amplitude'],
+                                'label': 'True T',
+                                'lineshape': {'label': data['True_exciton_T_lineshape'],
+                                                'linewidth': data['True_exciton_T_linewidth'],
+                                                'linewidth_g': data['True_exciton_T_linewidth_g'],
+                                                'linewidth_l': data['True_exciton_T_linewidth_l'],
+                                                'weight': data['True_exciton_T_weight']}}
+        true_exciton_T = Exciton()
+        true_exciton_T.from_dict(true_exciton_T_dict)
+
+        fit_exciton_A_dict = {'energy': data['Fit_exciton_0_energy'],
+                                'amplitude': data['Fit_exciton_0_amplitude'],
+                                'label': 'Fit A',
+                                'lineshape': {'label': data['Fit_exciton_0_lineshape'],
+                                                'linewidth': data['Fit_exciton_0_linewidth'],
+                                                'linewidth_g': data['Fit_exciton_0_linewidth_g'],
+                                                'linewidth_l': data['Fit_exciton_0_linewidth_l'],
+                                                'weight': data['Fit_exciton_0_weight']}}
+        fit_exciton_A = Exciton()
+        fit_exciton_A.from_dict(fit_exciton_A_dict)
+
+        fit_exciton_B_dict = {'energy': data['Fit_exciton_1_energy'],
+                                'amplitude': data['Fit_exciton_1_amplitude'],
+                                'label': 'Fit B',
+                                'lineshape': {'label': data['Fit_exciton_1_lineshape'],
+                                                'linewidth': data['Fit_exciton_1_linewidth'],
+                                                'linewidth_g': data['Fit_exciton_1_linewidth_g'],
+                                                'linewidth_l': data['Fit_exciton_1_linewidth_l'],
+                                                'weight': data['Fit_exciton_1_weight']}}
+        fit_exciton_B = Exciton()
+        fit_exciton_B.from_dict(fit_exciton_B_dict)
+
+        true_excitons = {'X': true_exciton_X,
+                         'T': true_exciton_T}
+        fit_excitons = {'A': fit_exciton_A,
+                         'B': fit_exciton_B}
+        exciton_group_true = ExcitonGroup(true_excitons, label='True')
+        exciton_group_fit = ExcitonGroup(fit_excitons, label='Fit')
+
+        x = X_RANGE
+        y_true = exciton_group_true.spectra(x)
+        seed = data['SEED']
+        np.random.seed(seed)
+        y_true += np.random.normal(0, noise_key, y_true.shape)
+
+        y_fit = exciton_group_fit.spectra(x)
+
+        color = lineshape_colors[list(lineshape_colors.keys())[3]]
+        fig.add_trace(go.Scatter(x=x, y=y_true, name='True Signal', line=dict(color=color), showlegend=j==0), row=row, col=col)
+        color = lineshape_colors[list(lineshape_colors.keys())[0]]
+        fig.add_trace(go.Scatter(x=x, y=y_fit, name='Fit Signal', line=dict(color=color), showlegend=j==0), row=row, col=col)
+
+        for exciton in exciton_group_true.exciton_list:
+                color = lineshape_colors[list(lineshape_colors.keys())[2]]
+                fig.add_trace(go.Scatter(x=x, y=exciton.spectra(x), name=exciton.label, mode='lines', line=dict(color=color, dash='dash'), showlegend=j==0), row=row, col=col)
+
+        for exciton in exciton_group_fit.exciton_list:
+            color = lineshape_colors[list(lineshape_colors.keys())[1]]
+            fig.add_trace(go.Scatter(x=x, y=exciton.spectra(x), name=exciton.label, mode='lines', line=dict(color=color, dash='dash'), showlegend=j==0), row=row, col=col)
 
 
-    # plt.savefig(f'Out\\Plots\\{moniker}\\Quad Plot {parameter_y} vs {parameter_x} xrange=({x_range}) yrange=({y_range})).png', bbox_inches='tight')
-    # plt.show()
+    fig.update_layout(
+        xaxis3=dict(title='Energy (eV)'),
+        xaxis4=dict(title='Energy (eV)'),
+        yaxis=dict(title='Intensity (a.u.)'),     # NOT yaxis1
+        yaxis3=dict(title='Intensity (a.u.)')
+    )
+
+    return fig
