@@ -23,6 +23,8 @@ moniker = 'Gaussian'
 linewidth_g_X, linewidth_l_X = linewidth_g_l(lineshape_ratio, exciton_X_effective_linewidth)
 linewidth_g_T, linewidth_l_T = linewidth_g_l(lineshape_ratio, exciton_T_effective_linewidth)
 
+print(linewidth_g_X, linewidth_l_X)
+
 # True Excitons
 true_exciton_a = Exciton()
 true_exciton_a.energy = 1.9
