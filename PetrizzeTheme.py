@@ -23,7 +23,7 @@ colors = [
     '#8ac926', # Green
     '#1982c4', # Blue
     '#6a4c93', # Purple,
-    '#59FFFA', # Cyan
+   # '#59FFFA', # Cyan
 ]
 
 # colors = [
