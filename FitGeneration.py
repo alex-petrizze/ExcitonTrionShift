@@ -134,10 +134,8 @@ for noise_stds_key, noise_stds_value in Config.NOISE_STDS.items():
 
                 rows.append(row)
 
-            
-
 
 df = pd.DataFrame(rows)
-df.to_parquet(f"Out\\Data.parquet")
+df.to_parquet(f"Out\\\\Data-True {Config.moniker}.parquet")
 
 

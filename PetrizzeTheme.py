@@ -27,6 +27,15 @@ colors = [
 ]
 
 # colors = [
+#     '#1982c4', # Red
+#     '#ff595e', # Yellow
+#     '#8ac926', # Green
+#     '#1982c4', # Blue
+#     '#6a4c93', # Purple,
+#     '#59FFFA', # Cyan
+# ]
+
+# colors = [
 #     '#C72138', # Red
 #     '#E06236', # Yellow
 #     '#D7A64B', # Green

@@ -3,8 +3,9 @@ import numpy as np
 from .Exciton import Exciton
 from .ExcitonGroup import ExcitonGroup
 from .Lineshape import VoigtLineshape
+from .Equations import linewidth_g_l, eta_linewidth
 
-X_RANGE = np.linspace(1, 3, 1000)
+X_RANGE = np.linspace(1.4, 2.4, 1000)
 
 NOISE_STDS = {}
 NOISE_STDS["HIGH"] = 0.001
@@ -12,20 +13,30 @@ NOISE_STDS["STANDARD"] = 0.025
 NOISE_STDS["LOW"] = 0.125
 NOISE_STDS["AWFUL"] = 0.3
 
+exciton_X_effective_linewidth = 0.074 # eV
+exciton_T_effective_linewidth = 0.064 # eV
+
+lineshape_ratio = 1 # Gaussian
+
+moniker = 'Gaussian'
+
+linewidth_g_X, linewidth_l_X = linewidth_g_l(lineshape_ratio, exciton_X_effective_linewidth)
+linewidth_g_T, linewidth_l_T = linewidth_g_l(lineshape_ratio, exciton_T_effective_linewidth)
+
 # True Excitons
 true_exciton_a = Exciton()
 true_exciton_a.energy = 1.9
 true_exciton_a.amplitude = 1
 true_exciton_a.label = "X"
-true_exciton_a.lineshape = VoigtLineshape(linewidth_g=0.1,
-                                          linewidth_l=0.1)
+true_exciton_a.lineshape = VoigtLineshape(linewidth_g=linewidth_g_X,
+                                          linewidth_l=linewidth_l_X)
 
 true_exciton_b = Exciton()
 true_exciton_b.energy = 1.75
-true_exciton_b.amplitude = 0.2
+true_exciton_b.amplitude = 0.5
 true_exciton_b.label = "T"
-true_exciton_b.lineshape = VoigtLineshape(linewidth_g=0.1,
-                                          linewidth_l=0.1)
+true_exciton_b.lineshape = VoigtLineshape(linewidth_g=linewidth_g_T,
+                                          linewidth_l=linewidth_l_T)
 
 true_excitons = {"X": true_exciton_a, 
                  "T": true_exciton_b}
