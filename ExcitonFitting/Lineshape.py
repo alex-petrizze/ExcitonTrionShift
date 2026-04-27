@@ -5,8 +5,12 @@ from scipy.special import voigt_profile
 from .Equations import eta_linewidth, linewidth_g_l
 
 eta_0 = 0.5
-linewidth_0 = 0.3
+linewidth_0 = 0.07
 linewidth_g_0, linewidth_l_0  = linewidth_g_l(eta_0, linewidth_0)
+
+gaussian_denominator = 2 * np.sqrt(2 * np.log(2))
+
+bounds_linewidth_max = 0.2
 
 class Lineshape:
     n_params = 0
@@ -24,14 +28,15 @@ class GaussianLineshape(Lineshape):
     n_params = 1
     p0 = [linewidth_0]
     bounds_min = [0]
-    bounds_max = [np.inf]
+    bounds_max = [bounds_linewidth_max]
     label = 'Gaussian'
 
     def __init__(self, linewidth):
         self.linewidth=linewidth
 
     def profile(self, x):
-        return norm.pdf(x, 0, self.linewidth)
+        sigma = self.linewidth / gaussian_denominator
+        return norm.pdf(x, 0, sigma)
     
     def __str__(self):
         string = f'Gaussian: {self.linewidth:0.2f}'
@@ -53,14 +58,14 @@ class LorentzianLineshape(Lineshape):
     n_params = 1
     p0 = [linewidth_0]
     bounds_min = [0]
-    bounds_max = [np.inf]
+    bounds_max = [bounds_linewidth_max]
     label = 'Lorentzian'
 
     def __init__(self, linewidth):
         self.linewidth=linewidth
 
     def profile(self, x):
-        return cauchy.pdf(x, 0, self.linewidth)
+        return cauchy.pdf(x, 0, self.linewidth/2)
     
     def __str__(self):
         string = f'Lorentzian: {self.linewidth:0.2f}'
@@ -84,8 +89,8 @@ class VoigtLineshape(Lineshape):
           linewidth_l_0]
     bounds_min = [0,
                   0]
-    bounds_max = [np.inf,
-                  np.inf]
+    bounds_max = [bounds_linewidth_max,
+                  bounds_linewidth_max]
     label = 'Voigt'
     
     def __init__(self, linewidth_g, linewidth_l):
@@ -93,7 +98,7 @@ class VoigtLineshape(Lineshape):
         self.linewidth_g = linewidth_g
 
     def profile(self, x):
-        y = voigt_profile(x, self.linewidth_g, self.linewidth_l)
+        y = voigt_profile(x, self.linewidth_g/gaussian_denominator, self.linewidth_l/2)
         return y
     
     def __str__(self):
@@ -111,7 +116,7 @@ class VoigtLineshape(Lineshape):
         return isinstance(other, VoigtLineshape) and self.linewidth_g == other.linewidth_g and self.linewidth_l == other.linewidth_l
     
     def weight_linewidth(self):
-        weight, linewidth = eta_linewidth(self.linewidth_g, self.linewidth_l)
+        weight, linewidth = eta_linewidth(self.linewidth_g/gaussian_denominator, self.linewidth_l/2)
         return weight, linewidth
     
 class PseudoVoigtLineshapePhysical(Lineshape):
@@ -120,8 +125,8 @@ class PseudoVoigtLineshapePhysical(Lineshape):
           linewidth_l_0]
     bounds_min = [0,
                   0]
-    bounds_max = [np.inf,
-                  np.inf]
+    bounds_max = [bounds_linewidth_max,
+                  bounds_linewidth_max]
     label = 'Pseudo-Voigt Physical'
     
     def __init__(self, linewidth_g, linewidth_l):
@@ -131,7 +136,7 @@ class PseudoVoigtLineshapePhysical(Lineshape):
         self.weight, self.linewidth = eta_linewidth(linewidth_g, linewidth_l)
         
     def profile(self, x):
-        return self.weight * norm.pdf(x, 0, self.linewidth) + (1 - self.weight) * cauchy.pdf(x, 0, self.linewidth)
+        return self.weight * norm.pdf(x, 0, self.linewidth/gaussian_denominator) + (1 - self.weight) * cauchy.pdf(x, 0, self.linewidth/2)
     
     def __str__(self):
         string = f'Pseudo-Physical: {self.linewidth_g:0.2f} G, {self.linewidth_l:0.2f} L'
@@ -158,14 +163,14 @@ class PseudoVoigtLineshapeWeight(Lineshape):
     bounds_min = [0,
                   0]
     bounds_max = [1,
-                  np.inf]
+                  bounds_linewidth_max]
     label = 'Pseudo-Voigt Weight'
     
     def __init__(self, weight, linewidth):
         self.weight, self.linewidth = weight, linewidth
         
     def profile(self, x):
-        return self.weight * norm.pdf(x, 0, self.linewidth) + (1 - self.weight) * cauchy.pdf(x, 0, self.linewidth)
+        return self.weight * norm.pdf(x, 0, self.linewidth/gaussian_denominator) + (1 - self.weight) * cauchy.pdf(x, 0, self.linewidth/2)
     
     def __str__(self):
         string = f'Pseudo-Physical: {self.weight:0.2f} Weight, {self.linewidth:0.2f} Linewidth'

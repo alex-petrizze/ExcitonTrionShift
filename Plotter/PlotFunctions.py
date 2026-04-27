@@ -170,6 +170,9 @@ def fit_plot(df, lineshape_key, true_exciton_T_energy):
 
         for exciton in exciton_group_fit.exciton_list:
             color = lineshape_colors[list(lineshape_colors.keys())[1]]
+
+            print(exciton.lineshape)
+
             fig.add_trace(go.Scatter(x=x, y=exciton.spectra(x), name=exciton.label, mode='lines', line=dict(color=color, dash='dash'), showlegend=j==0), row=row, col=col)
 
 
@@ -180,4 +183,34 @@ def fit_plot(df, lineshape_key, true_exciton_T_energy):
         yaxis3=dict(title='Intensity (a.u.)')
     )
 
+    return fig
+
+def histogram(df, parameter, label=None):
+    title = label
+    if not label:
+        title = title(parameter)
+
+    fig = make_subplots(rows=2, cols=2, horizontal_spacing=0, vertical_spacing=0)
+    for j, (noise_key, noise_data) in enumerate(df.groupby("NOISE_STD_VALUE")):
+        row = row_col[j][0]
+        col = row_col[j][1]
+
+        for i, (lineshape_key, lineshape_data) in enumerate(noise_data.groupby("LINESHAPE_KEY")):
+            x = lineshape_data[parameter]
+
+            fig.add_trace(go.Histogram(x=x), row=row, col=col)
+    
+    fig.update_xaxes(showticklabels=False)
+    fig.update_yaxes(showticklabels=False)
+
+    fig.update_xaxes(showticklabels=True, row=2)
+    fig.update_yaxes(showticklabels=True, col=1)
+    fig.update_xaxes(showticklabels=True, row=1, side='top')
+    fig.update_yaxes(showticklabels=True, col=2, side='right')
+
+    fig.update_layout(yaxis0=dict(title='Counts'))
+    fig.update_layout(yaxis3=dict(title='Counts'))
+    fig.update_layout(xaxis3=dict(title=title))
+    fig.update_layout(xaxis4=dict(title=title))
+    
     return fig

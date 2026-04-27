@@ -49,9 +49,9 @@ def fit_function(lineshape, n_fit_excitons=2):
 def get_p0(fit_exciton_lineshape):
     p0 = []
     for exciton in Config.TRUE_EXCITON_GROUP.exciton_list:
-        energy = exciton.energy + np.random.normal(0, 0.2)
+        energy = exciton.energy + np.random.normal(0, 0.07)
         energy = np.clip(energy, 0, np.inf)
-        amplitude = exciton.amplitude + np.random.normal(0, 0.1)
+        amplitude = exciton.amplitude + np.random.normal(0, 0.2)
         amplitude = np.clip(amplitude, 0, np.inf)
 
         p0.append(energy)
@@ -136,6 +136,6 @@ for noise_stds_key, noise_stds_value in Config.NOISE_STDS.items():
 
 
 df = pd.DataFrame(rows)
-df.to_parquet(f"Out\\\\Data-True {Config.moniker}.parquet")
+df.to_parquet(f"Out\\Data-True {Config.moniker}.parquet")
 
 
