@@ -28,7 +28,7 @@ class Histogram(QWidget):
         self.options_layout.addWidget(self.x_range)
 
         self.bin_edit = BinTextEdit()
-        self.layout.addWidget(self.bin_edit)
+        self.options_layout.addWidget(self.bin_edit)
 
         self.update_plot_button = QPushButton('Plot')
         self.update_plot_button.clicked.connect(self.update_plot)
