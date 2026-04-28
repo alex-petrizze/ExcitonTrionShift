@@ -41,13 +41,13 @@ def quad_plot(df, parameter_x, parameter_y, xlabel=None, ylabel=None, x_range=No
             x = lineshape_data[parameter_x]
             y = lineshape_data[parameter_y]
 
-            fig.add_trace(go.Scatter(x=x, y=y, showlegend=j==0, name=lineshape_key, mode='markers', marker=dict(color=lineshape_colors[lineshape_key])), row=row, col=col)
+            fig.add_trace(go.Scatter(x=x, y=y, showlegend=True, name=f'{lineshape_key} {noise_key} std', mode='markers', marker=dict(color=lineshape_colors[lineshape_key])), row=row, col=col)
 
         if show_trendline:
             fig.add_trace(go.Scatter(x=x, y=x, name='Expected', line=dict(dash='dash', color='#FFFFFF'), mode='lines', showlegend=False), row=row, col=col)
 
         fig.add_annotation(
-            text=f'{noise_key} noise std',
+            text=f'{noise_key} noise std ({1/noise_key:0.3f} Peak S/N)',
             x=0.05,
             y=0.95,
             xref='x domain',
@@ -203,7 +203,7 @@ def histogram(df, parameter, label=None, n_bins=None):
             fig.add_trace(go.Histogram(x=x, name=f'{lineshape_key} {noise_key} noise', nbinsx=n_bins), row=row, col=col)
 
         fig.add_annotation(
-            text=f'{noise_key} noise std',
+            text=f'{noise_key} noise std ({1/noise_key:0.3f} Peak S/N)',
             x=0.05,
             y=0.95,
             xref='x domain',
