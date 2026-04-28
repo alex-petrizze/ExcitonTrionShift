@@ -201,6 +201,17 @@ def histogram(df, parameter, label=None, n_bins=None):
             x = lineshape_data[parameter]
 
             fig.add_trace(go.Histogram(x=x, name=f'{lineshape_key} {noise_key} noise', nbinsx=n_bins), row=row, col=col)
+
+        fig.add_annotation(
+            text=f'{noise_key} noise std',
+            x=0.05,
+            y=0.95,
+            xref='x domain',
+            yref='y domain',
+            showarrow=False,
+            row=row,
+            col=col
+        )
     
     fig.update_xaxes(showticklabels=False)
     fig.update_yaxes(showticklabels=False)
