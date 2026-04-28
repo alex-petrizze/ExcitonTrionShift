@@ -8,7 +8,7 @@ class BinTextEdit(QWidget):
         self.layout = QHBoxLayout()
 
         self.label = QLabel(label)
-        self.layout.addWIdget(self.label)
+        self.layout.addWidget(self.label)
         self.text_edit = QSpinBox()
         self.addWidget(self.text_edit)
 

@@ -5,6 +5,7 @@ from .AxisParameter import AxisParameter
 from .PlotFunctions import histogram
 from .DataLoader import load_data
 from .AxisRange import AxisRange
+from .BinTextEdit import BinTextEdit
 
 class Histogram(QWidget):
     def __init__(self):
@@ -25,6 +26,9 @@ class Histogram(QWidget):
 
         self.x_range = AxisRange()
         self.options_layout.addWidget(self.x_range)
+
+        self.bin_edit = BinTextEdit()
+        self.layout.addWidget(self.bin_edit)
 
         self.update_plot_button = QPushButton('Plot')
         self.update_plot_button.clicked.connect(self.update_plot)
