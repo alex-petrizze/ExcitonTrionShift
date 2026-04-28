@@ -50,10 +50,10 @@ TRUE_EXCITON_GROUP = ExcitonGroup(true_excitons, label='True')
 ENERGY_RANGE_B = np.arange(1.7, 1.9, 0.001)
 
 # Bounds
-bounds_min_energy = 0
-bounds_max_energy = np.inf
+bounds_min_energy = 1
+bounds_max_energy = 3
 bounds_min_amplitude = 0
-bounds_max_amplitude = np.inf
+bounds_max_amplitude = 1.5
 bounds_min_linewidth = 0
 bounds_max_linewidth = 0.1
 bounds_min_eta = 0
