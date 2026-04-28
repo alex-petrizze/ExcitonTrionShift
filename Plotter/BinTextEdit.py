@@ -10,7 +10,7 @@ class BinTextEdit(QWidget):
         self.label = QLabel(label)
         self.layout.addWidget(self.label)
         self.text_edit = QSpinBox()
-        self.addWidget(self.text_edit)
+        self.layout.addWidget(self.text_edit)
 
         self.setLayout(self.layout)
 
