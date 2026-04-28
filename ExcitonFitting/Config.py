@@ -18,9 +18,14 @@ exciton_T_effective_linewidth = 0.064 # eV
 
 # 0 -> Gaussian
 # 1 -> Lorentzian
-lineshape_ratio = 0.5
 
-moniker = '5050'
+
+lineshape_ratio_dict = {"Gaussian": 0,
+                        "5050": 0.5,
+                        "Lorentzian": 1}
+
+moniker = 'Lorentzian'
+lineshape_ratio = lineshape_ratio_dict[moniker]
 
 linewidth_g_X, linewidth_l_X = linewidth_g_l(lineshape_ratio, exciton_X_effective_linewidth)
 linewidth_g_T, linewidth_l_T = linewidth_g_l(lineshape_ratio, exciton_T_effective_linewidth)
