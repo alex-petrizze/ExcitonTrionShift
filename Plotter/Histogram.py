@@ -59,4 +59,6 @@ class Histogram(QWidget):
         name = self.data_combo_box.value
         self.df = load_data(name)
         parameters = self.df.columns
-        self.parameter_widget.add_items(parameters)
+
+        n_bins = self.bin_edit.value()
+        self.parameter_widget.add_items(parameters, n_bins=n_bins)
