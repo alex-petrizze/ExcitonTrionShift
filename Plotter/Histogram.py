@@ -51,7 +51,8 @@ class Histogram(QWidget):
         else:
             plotted_df = self.df
 
-        fig = histogram(plotted_df, parameter)
+        n_bins = self.bin_edit.value()
+        fig = histogram(plotted_df, parameter, n_bins=n_bins)
         self.plot.update_fig(fig)
 
 
@@ -60,5 +61,4 @@ class Histogram(QWidget):
         self.df = load_data(name)
         parameters = self.df.columns
 
-        n_bins = self.bin_edit.value()
-        self.parameter_widget.add_items(parameters, n_bins=n_bins)
+        self.parameter_widget.add_items(parameters)
