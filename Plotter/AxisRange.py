@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QHBoxLayout, QVBoxLayout, QWidget, QLabel, QLineEdit
+from PySide6.QtWidgets import QHBoxLayout, QWidget, QLabel, QLineEdit
 from PySide6.QtGui import QDoubleValidator
 
 class AxisRange(QWidget):

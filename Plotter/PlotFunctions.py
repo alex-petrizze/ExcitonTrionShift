@@ -197,7 +197,7 @@ def histogram(df, parameter, label=None):
         for i, (lineshape_key, lineshape_data) in enumerate(noise_data.groupby("LINESHAPE_KEY")):
             x = lineshape_data[parameter]
 
-            fig.add_trace(go.Histogram(x=x), row=row, col=col)
+            fig.add_trace(go.Histogram(x=x, name=f'{lineshape_key} {noise_key} noise'), row=row, col=col)
     
     fig.update_xaxes(showticklabels=False)
     fig.update_yaxes(showticklabels=False)
