@@ -186,9 +186,8 @@ def fit_plot(df, lineshape_key, true_exciton_T_energy):
     return fig
 
 def histogram(df, parameter, label=None):
-    title = label
     if not label:
-        title = title(parameter)
+        label = title(parameter)
 
     fig = make_subplots(rows=2, cols=2, horizontal_spacing=0, vertical_spacing=0)
     for j, (noise_key, noise_data) in enumerate(df.groupby("NOISE_STD_VALUE")):
@@ -208,9 +207,9 @@ def histogram(df, parameter, label=None):
     fig.update_xaxes(showticklabels=True, row=1, side='top')
     fig.update_yaxes(showticklabels=True, col=2, side='right')
 
-    fig.update_layout(yaxis0=dict(title='Counts'))
+    fig.update_layout(yaxis1=dict(title='Counts'))
     fig.update_layout(yaxis3=dict(title='Counts'))
-    fig.update_layout(xaxis3=dict(title=title))
-    fig.update_layout(xaxis4=dict(title=title))
+    fig.update_layout(xaxis3=dict(title=label))
+    fig.update_layout(xaxis4=dict(title=label))
     
     return fig
