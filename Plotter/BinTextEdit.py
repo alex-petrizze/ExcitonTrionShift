@@ -15,9 +15,5 @@ class BinTextEdit(QWidget):
         self.setLayout(self.layout)
 
     def value(self):
-        text = self.text_edit.toPlainText()
-        if len(text) > 0:
-            return int(text)
-        else:
-            return None
-        
+        self.text_edit.value()
+        return self.text_edit.value()

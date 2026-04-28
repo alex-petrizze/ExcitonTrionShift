@@ -186,7 +186,7 @@ def fit_plot(df, lineshape_key, true_exciton_T_energy):
     return fig
 
 def histogram(df, parameter, label=None, n_bins=None):
-    if not n_bins:
+    if not n_bins or n_bins <= 0:
         n_bins = 6
 
     if not label:
