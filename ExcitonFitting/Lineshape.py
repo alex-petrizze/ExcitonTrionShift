@@ -136,7 +136,7 @@ class PseudoVoigtLineshapePhysical(Lineshape):
         self.weight, self.linewidth = eta_linewidth(linewidth_g, linewidth_l)
         
     def profile(self, x):
-        return self.weight * norm.pdf(x, 0, self.linewidth/gaussian_denominator) + (1 - self.weight) * cauchy.pdf(x, 0, self.linewidth/2)
+        return (1 - self.weight) * norm.pdf(x, 0, self.linewidth/gaussian_denominator) + self.weight * cauchy.pdf(x, 0, self.linewidth/2)
     
     def __str__(self):
         string = f'Pseudo-Physical: {self.linewidth_g:0.2f} G, {self.linewidth_l:0.2f} L'
@@ -170,7 +170,7 @@ class PseudoVoigtLineshapeWeight(Lineshape):
         self.weight, self.linewidth = weight, linewidth
         
     def profile(self, x):
-        return self.weight * norm.pdf(x, 0, self.linewidth/gaussian_denominator) + (1 - self.weight) * cauchy.pdf(x, 0, self.linewidth/2)
+        return (1 - self.weight) * norm.pdf(x, 0, self.linewidth/gaussian_denominator) + self.weight * cauchy.pdf(x, 0, self.linewidth/2)
     
     def __str__(self):
         string = f'Pseudo-Physical: {self.weight:0.2f} Weight, {self.linewidth:0.2f} Linewidth'

@@ -16,9 +16,11 @@ NOISE_STDS["AWFUL"] = 0.3
 exciton_X_effective_linewidth = 0.074 # eV
 exciton_T_effective_linewidth = 0.064 # eV
 
-lineshape_ratio = 1 # Gaussian
+# 0 -> Gaussian
+# 1 -> Lorentzian
+lineshape_ratio = 0.5
 
-moniker = 'Gaussian'
+moniker = '5050'
 
 linewidth_g_X, linewidth_l_X = linewidth_g_l(lineshape_ratio, exciton_X_effective_linewidth)
 linewidth_g_T, linewidth_l_T = linewidth_g_l(lineshape_ratio, exciton_T_effective_linewidth)

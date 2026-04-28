@@ -33,7 +33,7 @@ class Histogram(QWidget):
         self.load_data()
 
     def update_plot(self):
-        parameter = self.parameter_widget.currentText()
+        parameter = self.parameter_widget.value()
         fig = histogram(self.df, parameter)
         self.plot.updated_fig(fig)
 
