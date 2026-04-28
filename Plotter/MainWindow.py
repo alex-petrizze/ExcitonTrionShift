@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QHBoxLayout, QVBoxLayout, QMainWindow, QTabWidget, QWidget
 from .Scatter import Scatter
 from .Histogram import Histogram
+from .Ternary import Ternary
 from .Fit import Fit
 
 class MainWindow(QMainWindow):

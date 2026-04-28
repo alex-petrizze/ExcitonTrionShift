@@ -227,3 +227,49 @@ def histogram(df, parameter, label=None, n_bins=None):
     fig.update_layout(xaxis4=dict(title=label))
     
     return fig
+
+
+def ternary(plotted_df, parameter_x, parameter_y, parameter_z):
+    title_x = title(parameter_x)
+    title_y = title(parameter_y)
+    title_z = title(parameter_z)
+
+
+    fig = make_subplots(
+    rows=2, cols=2,
+    horizontal_spacing=0,
+    vertical_spacing=0,
+    specs=[
+        [{"type": "ternary"}, {"type": "ternary"}],
+        [{"type": "ternary"}, {"type": "ternary"}],
+        ]
+    )
+    for j, (noise_key, noise_data) in enumerate(plotted_df.groupby("NOISE_STD_VALUE")):
+        row = row_col[j][0]
+        col = row_col[j][1]
+
+        for i, (lineshape_key, lineshape_data) in enumerate(noise_data.groupby("LINESHAPE_KEY")):
+            x = lineshape_data[parameter_x]
+            y = lineshape_data[parameter_y]
+            z = lineshape_data[parameter_z]
+
+            fig.add_trace(go.Scatterternary(a=x, b=y, c=z, name=f'{lineshape_key} {noise_key} noise'), row=row, col=col)
+
+        # fig.add_annotation(
+        #     text=f'{noise_key} noise std ({1/noise_key:0.3f} Peak S/N)',
+        #     x=0.05,
+        #     y=0.95,
+        #     xref='ternary domain',
+        #     yref='ternary domain',
+        #     showarrow=False,
+        #     row=row,
+        #     col=col
+        # )
+
+        # fig.update_xaxes(title=title_x, row=row, col=col)
+        # fig.update_yaxes(title=title_y, row=row, col=col)
+        # fig.update_zaxes(title=title_z, row=row, col=col)
+
+    print('Finished creating Ternary fig')
+    
+    return fig
