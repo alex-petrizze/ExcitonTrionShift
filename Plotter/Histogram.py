@@ -4,6 +4,7 @@ from .DataComboBox import DataComboBox
 from .AxisParameter import AxisParameter
 from .PlotFunctions import histogram
 from .DataLoader import load_data
+from .AxisRange import AxisRange
 
 class Histogram(QWidget):
     def __init__(self):
@@ -22,6 +23,9 @@ class Histogram(QWidget):
         self.parameter_widget = AxisParameter('Parameter:')
         self.options_layout.addWidget(self.parameter_widget)
 
+        self.x_range = AxisRange()
+        self.options_layout.addWidget(self.x_range)
+
         self.update_plot_button = QPushButton('Plot')
         self.update_plot_button.clicked.connect(self.update_plot)
         self.options_layout.addWidget(self.update_plot_button)
@@ -34,7 +38,16 @@ class Histogram(QWidget):
 
     def update_plot(self):
         parameter = self.parameter_widget.value()
-        fig = histogram(self.df, parameter)
+
+        low = self.x_range.low
+        high = self.x_range.high
+
+        if not None in [low, high]:
+            plotted_df = self.df[(self.df[parameter] <= high) & (self.df[parameter] > low)]
+        else:
+            plotted_df = self.df
+
+        fig = histogram(plotted_df, parameter)
         self.plot.update_fig(fig)
 
 
