@@ -55,6 +55,8 @@ class Scatter(QWidget):
         self.x_parameter.add_items(parameters)
         self.y_parameter.add_items(parameters)
 
+        self.filter_range_scroller.parameter_choice.add_items(parameters)
+
     def update_plot(self):
         
         x_range, y_range = self.xy_range.get_bounds()
