@@ -61,7 +61,17 @@ class Scatter(QWidget):
         
         x_range, y_range = self.xy_range.get_bounds()
 
-        fig = quad_plot(self.df, 
+        filtered_df = self.df
+        for parameter_filter in self.filter_range_scroller.get_filters():
+            parameter = parameter_filter['PARAMETER']
+            parameter_min = parameter_filter['MIN']
+            parameter_max = parameter_filter['MAX']
+
+            filtered_df = filtered_df[
+                filtered_df[parameter].between(parameter_min, parameter_max)
+            ]
+
+        fig = quad_plot(filtered_df, 
                         parameter_x=self.x_parameter.value(),
                         parameter_y=self.y_parameter.value(),
                         x_range=x_range,

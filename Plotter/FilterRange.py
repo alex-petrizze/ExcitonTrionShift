@@ -24,6 +24,7 @@ class FilterRange(QWidget):
         self.layout.addWidget(self.parameter_range)
 
         self.delete_button = QPushButton('Delete')
+        self.delete_button.pressed.connect(self.delete)
         self.layout.addWidget(self.delete_button)
 
         self.setLayout(self.layout)
@@ -39,3 +40,9 @@ class FilterRange(QWidget):
             'MIN': low if low is not None else -np.inf,
             'MAX': high if high is not None else np.inf
         }
+    
+    def delete(self):
+        parent_layout = self.parentWidget().layout()
+        parent_layout.removeWidget(self)
+        self.setParent(None)
+        self.deleteLater()
