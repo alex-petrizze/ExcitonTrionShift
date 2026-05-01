@@ -6,6 +6,7 @@ from .PlotFunctions import histogram
 from .DataLoader import load_data
 from .AxisRange import AxisRange
 from .BinTextEdit import BinTextEdit
+from .FilterRangeScroller import FilterRangeScroller
 
 class Histogram(QWidget):
     def __init__(self):
@@ -30,6 +31,9 @@ class Histogram(QWidget):
         self.bin_edit = BinTextEdit()
         self.options_layout.addWidget(self.bin_edit)
 
+        self.filter_range_scroller = FilterRangeScroller()
+        self.options_layout.addWidget(self.filter_range_scroller)
+
         self.update_plot_button = QPushButton('Plot')
         self.update_plot_button.clicked.connect(self.update_plot)
         self.options_layout.addWidget(self.update_plot_button)
@@ -51,6 +55,16 @@ class Histogram(QWidget):
         else:
             plotted_df = self.df
 
+        plotted_df = self.df
+        for parameter_filter in self.filter_range_scroller.get_filters():
+            parameter = parameter_filter['PARAMETER']
+            parameter_min = parameter_filter['MIN']
+            parameter_max = parameter_filter['MAX']
+
+            plotted_df = plotted_df[
+                plotted_df[parameter].between(parameter_min, parameter_max)
+            ]
+
         n_bins = self.bin_edit.value()
         fig = histogram(plotted_df, parameter, n_bins=n_bins)
         self.plot.update_fig(fig)
@@ -62,3 +76,5 @@ class Histogram(QWidget):
         parameters = self.df.columns
 
         self.parameter_widget.add_items(parameters)
+
+        self.filter_range_scroller.parameter_choice.add_items(parameters)
