@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QHBoxLayout, QVBoxLayout, QMainWindow, QTabWidget, QWidget, QPushButton,QScrollArea
+from PySide6.QtWidgets import QHBoxLayout, QVBoxLayout, QMainWindow, QTabWidget, QWidget, QPushButton, QScrollArea
 from .QPlotly import QPlotly
 from .DataComboBox import DataComboBox
 from .AxisParameter import AxisParameter
@@ -13,7 +13,15 @@ class FilterRangeScroller(QWidget):
 
         self.layout = QVBoxLayout()
 
+
+        self.parameter_choice = AxisParameter()
+        self.layout.addWidget(self.parameter_choice)
+        self.add_parameter_button = QPushButton('Add Filter')
+        self.layout.addWidget(self.add_parameter_button)
+
         self.scroller = QScrollArea()
         self.layout.addWidget(self.scroller)
 
         self.setLayout(self.layout)
+
+    
