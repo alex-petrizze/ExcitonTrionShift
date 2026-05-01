@@ -3,6 +3,7 @@ from .Scatter import Scatter
 from .Histogram import Histogram
 from .Ternary import Ternary
 from .Fit import Fit
+from .FilterRangeScroller import FilterRangeScroller
 
 class MainWindow(QMainWindow):
     def __init__(self):

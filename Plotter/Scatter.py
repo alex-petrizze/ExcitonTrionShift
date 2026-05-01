@@ -6,6 +6,7 @@ from .AxisParameter import AxisParameter
 from .XYRange import XYRange
 from PetrizzeTheme import petrizze_template_go
 from .PlotFunctions import quad_plot
+from .FilterRangeScroller import FilterRangeScroller
 
 
 petrizze_template_go()
@@ -33,6 +34,9 @@ class Scatter(QWidget):
 
         self.xy_range = XYRange()
         self.options_layout.addWidget(self.xy_range)
+
+        self.filter_range_scroller = FilterRangeScroller()
+        self.options_layout.addWidget(self.filter_range_scroller)
 
         self.plot_button = QPushButton(text='Plot')
         self.plot_button.clicked.connect(self.update_plot)
