@@ -40,6 +40,8 @@ class QPlotly(QWidget):
 
         layout.addLayout(self.option_layout)
 
+        # blank comment
+
         self.filename = 'fig'
 
         self.fig = None
