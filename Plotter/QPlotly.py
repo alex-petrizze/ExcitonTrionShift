@@ -122,12 +122,13 @@ class QPlotly(QWidget):
         self.view.page().runJavaScript(js)
 
     def save_fig(self):
-        filename = PLOT_DIRECTORY + self.filename + '.png'
+        name = self.line_edit_name.text()
+        filename = PLOT_DIRECTORY + name + '.png'
         print(f'Saving {filename}...')
         self.fig.update_layout(font=dict(size=24))
         self.fig.update_layout(margin=dict(t=100, l=100, r=100, b=100))
         
-        with open(filename + ".json", "w") as f:
+        with open('Out\\' + name + ".json", "w") as f:
             json.dump(self.fig.to_dict(), f)
 
         width = int(self.line_edit_width.text())
