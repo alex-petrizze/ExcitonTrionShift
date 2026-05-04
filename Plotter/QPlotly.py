@@ -127,6 +127,9 @@ class QPlotly(QWidget):
         self.fig.update_layout(font=dict(size=24))
         self.fig.update_layout(margin=dict(t=100, l=100, r=100, b=100))
         
+        with open(filename + ".json", "w") as f:
+            json.dump(self.fig.to_dict(), f)
+
         width = int(self.line_edit_width.text())
         height = int(self.line_edit_height.text())
 
