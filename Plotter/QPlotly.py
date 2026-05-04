@@ -1,5 +1,6 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QPushButton
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QHBoxLayout, QLabel, QLineEdit
 from PySide6.QtWebEngineWidgets import QWebEngineView
+from PySide6.QtGui import QIntValidator
 import json
 
 PLOT_DIRECTORY = 'Out\\Plots'
@@ -14,9 +15,30 @@ class QPlotly(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.addWidget(self.view)
 
+        self.option_layout = QHBoxLayout()
+
         self.save_button = QPushButton('Save Fig')
         self.save_button.clicked.connect(self.save_fig)
-        layout.addWidget(self.save_button)
+        self.option_layout.addWidget(self.save_button)
+
+        validator = QIntValidator()
+        self.option_layout.addWidget(QLabel('Name:'))
+        self.line_edit_name = QLineEdit()
+        self.option_layout.addWidget(self.line_edit_name)
+
+        self.option_layout.addWidget(QLabel('Width:'))
+        self.line_edit_width = QLineEdit()
+        self.line_edit_width.setText('1920')
+        self.option_layout.addWidget(self.line_edit_width)
+        self.line_edit_width.setValidator(validator)
+
+        self.option_layout.addWidget(QLabel('Height:'))
+        self.line_edit_height= QLineEdit()
+        self.line_edit_height.setText('1080')
+        self.option_layout.addWidget(self.line_edit_height)
+        self.line_edit_height.setValidator(validator)
+
+        layout.addLayout(self.option_layout)
 
         self.filename = 'fig'
 
@@ -102,7 +124,11 @@ class QPlotly(QWidget):
         print(f'Saving {filename}...')
         self.fig.update_layout(font=dict(size=24))
         self.fig.update_layout(margin=dict(t=100, l=100, r=100, b=100))
-        self.fig.write_image(filename, height=1080, width=1080)
+        
+        width = int(self.line_edit_width.text())
+        height = int(self.line_edit_height.text())
+
+        self.fig.write_image(filename, height=height, width=width)
 
         import os
         os.startfile(filename)
